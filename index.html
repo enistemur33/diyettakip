@@ -42,6 +42,22 @@
   /* Kart arka planı */
   --renk-kart-bg: #ffffff;
   --renk-kart-yazi: #1a1a1a;
+  /* Tablo */
+  --renk-tablo-baslik-yazi: #ffffff;
+  --renk-tablo-gun-yazi: #1a1a1a;
+  --renk-tablo-veri-yazi: #6b7280;
+  --renk-tablo-bugun-bg: #f0faf5;
+  /* Giriş ekranı logo alanı */
+  --renk-logo-baslik: #ffffff;
+  --renk-logo-slogan: rgba(255,255,255,0.75);
+  --renk-logo-dyt: rgba(255,255,255,0.95);
+  /* Listem başlığı */
+  --renk-listem-baslik: #ffffff;
+  /* Rozet (danışan giriş sayısı) */
+  --renk-rozet-bg: var(--renk-ana-acik);
+  --renk-rozet-yazi: var(--renk-ana);
+  /* Ayarlar sayfası yazıları */
+  --renk-ayarlar-yazi: #1a1a1a;
   --font: 'Segoe UI', -apple-system, sans-serif;
   --radius: 14px;
   --radius-sm: 10px;
@@ -66,8 +82,8 @@ body { font-family: var(--font); color: var(--renk-metin); background: var(--ren
 .icerik { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 14px; }
 .logo-alani { background: linear-gradient(160deg, #e91e8c 0%, #be185d 100%); padding: 48px 24px 36px; display: flex; flex-direction: column; align-items: center; gap: 8px; flex-shrink: 0; }
 .logo-daire { width: 80px; height: 80px; background: rgba(255,255,255,0.2); border-radius: 24px; display: flex; align-items: center; justify-content: center; font-size: 38px; margin-bottom: 8px; }
-.logo-alani h2 { color: white; font-size: 24px; font-weight: 700; }
-.logo-alani p { color: rgba(255,255,255,0.75); font-size: 13px; }
+.logo-alani h2 { color: var(--renk-logo-baslik,white); font-size: 24px; font-weight: 700; }
+.logo-alani p { color: var(--renk-logo-slogan,rgba(255,255,255,0.75)); font-size: 13px; }
 .giris-form { padding: 24px 20px; flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; background: var(--renk-giris-bg,#ffffff); color: var(--renk-giris-yazi,#1a1a1a); }
 .rol-sekim { display: flex; background: var(--renk-sinir); border-radius: var(--radius-sm); padding: 3px; }
 .rol-btn { flex: 1; padding: 9px; border: none; background: none; border-radius: 8px; font-size: 14px; cursor: pointer; color: var(--renk-giris-yazi,var(--renk-metin2)); font-weight: 500; transition: all 0.2s; }
@@ -84,7 +100,7 @@ body { font-family: var(--font); color: var(--renk-metin); background: var(--ren
 .danisan-bilgi { flex: 1; min-width: 0; }
 .danisan-ad { font-size: 15px; font-weight: 600; }
 .danisan-meta { font-size: 12px; color: var(--renk-metin2); margin-top: 2px; }
-.rozet { font-size: 11px; padding: 4px 10px; border-radius: 20px; background: var(--renk-ana-acik); color: var(--renk-ana); font-weight: 600; white-space: nowrap; }
+.rozet { font-size: 11px; padding: 4px 10px; border-radius: 20px; background: var(--renk-rozet-bg,var(--renk-ana-acik)); color: var(--renk-rozet-yazi,var(--renk-ana)); font-weight: 600; white-space: nowrap; }
 .fab { position: absolute; bottom: 20px; right: 16px; width: 56px; height: 56px; background: var(--renk-ana); border: none; border-radius: 18px; color: white; font-size: 28px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(45,106,79,0.45); transition: transform 0.1s; }
 .fab:active { transform: scale(0.94); }
 
@@ -103,7 +119,7 @@ body { font-family: var(--font); color: var(--renk-metin); background: var(--ren
 }
 .diyet-tablo thead th {
   background: var(--renk-ana);
-  color: white;
+  color: var(--renk-tablo-baslik-yazi,#ffffff);
   padding: var(--tablo-hucre-dolgu);
   text-align: center;
   font-weight: 600;
@@ -125,18 +141,20 @@ body { font-family: var(--font); color: var(--renk-metin); background: var(--ren
   height: var(--tablo-hucre-yukseklik);
   width: var(--tablo-hucre-genisligi);
   overflow: hidden;
+  color: var(--renk-tablo-gun-yazi,#1a1a1a);
 }
 .diyet-tablo tbody td:first-child {
   text-align: left;
   padding-left: 8px;
   font-weight: 600;
   width: var(--tablo-gun-genisligi);
+  color: var(--renk-tablo-gun-yazi,#1a1a1a);
 }
-.diyet-tablo tbody tr.bugun td { background: #f0faf5; }
+.diyet-tablo tbody tr.bugun td { background: var(--renk-tablo-bugun-bg,#f0faf5); }
 .diyet-tablo tbody tr.bugun td:first-child { color: var(--renk-ana); }
-.hucre-deger { font-size: var(--tablo-yazi-boyutu); font-weight: 700; color: var(--renk-metin2); }
+.hucre-deger { font-size: var(--tablo-yazi-boyutu); font-weight: 700; color: var(--renk-tablo-veri-yazi,var(--renk-metin2)); }
 .hucre-deger.dolu { color: var(--renk-ana); }
-.bugun-etiketi { font-size: 8px; background: var(--renk-ana); color: white; padding: 1px 4px; border-radius: 3px; margin-left: 2px; }
+.bugun-etiketi { font-size: 8px; background: var(--renk-ana); color: var(--renk-tablo-baslik-yazi,white); padding: 1px 4px; border-radius: 3px; margin-left: 2px; }
 
 /* ===== TAKİP BÖLÜMÜ ===== */
 .takip-bolum { background: var(--renk-kart,white); border-top: 1.5px solid var(--renk-sinir); padding: 8px 14px; flex-shrink: 0; }
@@ -195,7 +213,7 @@ body { font-family: var(--font); color: var(--renk-metin); background: var(--ren
   border-bottom: 1px solid rgba(255,255,255,0.15);
 }
 .dyt-bant-yazi {
-  color: rgba(255,255,255,0.92);
+  color: var(--renk-logo-dyt, rgba(255,255,255,0.92));
   font-size: 11px;
   font-style: italic;
   font-family: 'Georgia', serif;
@@ -328,13 +346,13 @@ body { font-family: var(--font); color: var(--renk-metin); background: var(--ren
           </defs>
           <text style="font-size:0;">
             <textPath href="#yay" startOffset="50%" text-anchor="middle"
-              style="font-family:'Georgia',serif;font-size:15px;fill:rgba(255,255,255,0.95);letter-spacing:2px;font-style:italic;">
+              style="font-family:'Georgia',serif;font-size:15px;fill:var(--renk-logo-dyt,rgba(255,255,255,0.95));letter-spacing:2px;font-style:italic;">
               ✦ Dyt. Hatice Lale TEMUR ✦
             </textPath>
           </text>
           <text>
             <textPath href="#yay" startOffset="50%" text-anchor="middle"
-              style="font-family:'Georgia',serif;font-size:15px;fill:rgba(255,255,255,0.95);letter-spacing:2px;font-style:italic;">
+              style="font-family:'Georgia',serif;font-size:15px;fill:var(--renk-logo-dyt,rgba(255,255,255,0.95));letter-spacing:2px;font-style:italic;">
               ✦ Dyt. Hatice Lale TEMUR ✦
             </textPath>
           </text>
@@ -550,8 +568,77 @@ body { font-family: var(--font); color: var(--renk-metin); background: var(--ren
           </div>
         </div>
 
-        <!-- GİRİŞ EKRANI -->
-        <div style="padding:10px 16px 4px;font-size:11px;font-weight:700;color:var(--renk-metin2);text-transform:uppercase;letter-spacing:0.5px;">Giriş Ekranı (Alt Alan)</div>
+        <!-- GİRİŞ EKRANI LOGO ALANI -->
+        <div style="padding:10px 16px 4px;font-size:11px;font-weight:700;color:var(--renk-metin2);text-transform:uppercase;letter-spacing:0.5px;">Giriş Ekranı Logo Alanı</div>
+        <div class="ayar-satir">
+          <div><div class="ayar-etiket">Uygulama Adı Rengi</div><div class="ayar-aciklama">DiyetTakip başlık yazısı — #ffffff</div></div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <input type="text" id="txt-logo-baslik" value="#ffffff" maxlength="7" oninput="renkKodGuncelle('--renk-logo-baslik','logoBaslik',this.value)" style="width:72px;padding:5px 7px;border:1.5px solid var(--renk-sinir);border-radius:8px;font-size:12px;font-family:monospace;background:var(--renk-kart,white);color:var(--renk-metin)"/>
+            <input type="color" class="renk-sec" id="ayar-logo-baslik" value="#ffffff" oninput="renkGuncelle('--renk-logo-baslik','logoBaslik',this.value)"/>
+          </div>
+        </div>
+        <div class="ayar-satir">
+          <div><div class="ayar-etiket">Slogan Rengi</div><div class="ayar-aciklama">Beslenme takip programı — #ffffffBF</div></div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <input type="text" id="txt-logo-slogan" value="#ffffff" maxlength="7" oninput="renkKodGuncelle('--renk-logo-slogan','logoSlogan',this.value)" style="width:72px;padding:5px 7px;border:1.5px solid var(--renk-sinir);border-radius:8px;font-size:12px;font-family:monospace;background:var(--renk-kart,white);color:var(--renk-metin)"/>
+            <input type="color" class="renk-sec" id="ayar-logo-slogan" value="#ffffff" oninput="renkGuncelle('--renk-logo-slogan','logoSlogan',this.value)"/>
+          </div>
+        </div>
+        <div class="ayar-satir">
+          <div><div class="ayar-etiket">✦ Dyt. Hatice Yazısı</div><div class="ayar-aciklama">Hilal yazı ve danışan ekranı bandı — #ffffffEB</div></div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <input type="text" id="txt-logo-dyt" value="#ffffff" maxlength="7" oninput="renkKodGuncelle('--renk-logo-dyt','logoDyt',this.value)" style="width:72px;padding:5px 7px;border:1.5px solid var(--renk-sinir);border-radius:8px;font-size:12px;font-family:monospace;background:var(--renk-kart,white);color:var(--renk-metin)"/>
+            <input type="color" class="renk-sec" id="ayar-logo-dyt" value="#ffffff" oninput="renkGuncelle('--renk-logo-dyt','logoDyt',this.value)"/>
+          </div>
+        </div>
+
+        <!-- TABLO -->
+        <div style="padding:10px 16px 4px;font-size:11px;font-weight:700;color:var(--renk-metin2);text-transform:uppercase;letter-spacing:0.5px;">Tablo</div>
+        <div class="ayar-satir">
+          <div><div class="ayar-etiket">Başlık Yazısı</div><div class="ayar-aciklama">Gün, Ekmek, Su vb. — #ffffff</div></div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <input type="text" id="txt-tablo-baslik-yazi" value="#ffffff" maxlength="7" oninput="renkKodGuncelle('--renk-tablo-baslik-yazi','tabloBaslikYazi',this.value)" style="width:72px;padding:5px 7px;border:1.5px solid var(--renk-sinir);border-radius:8px;font-size:12px;font-family:monospace;background:var(--renk-kart,white);color:var(--renk-metin)"/>
+            <input type="color" class="renk-sec" id="ayar-tablo-baslik-yazi" value="#ffffff" oninput="renkGuncelle('--renk-tablo-baslik-yazi','tabloBaslikYazi',this.value)"/>
+          </div>
+        </div>
+        <div class="ayar-satir">
+          <div><div class="ayar-etiket">Gün Yazısı</div><div class="ayar-aciklama">Pazartesi, Salı vb. — #1a1a1a</div></div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <input type="text" id="txt-tablo-gun-yazi" value="#1a1a1a" maxlength="7" oninput="renkKodGuncelle('--renk-tablo-gun-yazi','tabloGunYazi',this.value)" style="width:72px;padding:5px 7px;border:1.5px solid var(--renk-sinir);border-radius:8px;font-size:12px;font-family:monospace;background:var(--renk-kart,white);color:var(--renk-metin)"/>
+            <input type="color" class="renk-sec" id="ayar-tablo-gun-yazi" value="#1a1a1a" oninput="renkGuncelle('--renk-tablo-gun-yazi','tabloGunYazi',this.value)"/>
+          </div>
+        </div>
+        <div class="ayar-satir">
+          <div><div class="ayar-etiket">Veri Sayıları</div><div class="ayar-aciklama">İşlenen değerler — #6b7280</div></div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <input type="text" id="txt-tablo-veri-yazi" value="#6b7280" maxlength="7" oninput="renkKodGuncelle('--renk-tablo-veri-yazi','tabloVeriYazi',this.value)" style="width:72px;padding:5px 7px;border:1.5px solid var(--renk-sinir);border-radius:8px;font-size:12px;font-family:monospace;background:var(--renk-kart,white);color:var(--renk-metin)"/>
+            <input type="color" class="renk-sec" id="ayar-tablo-veri-yazi" value="#6b7280" oninput="renkGuncelle('--renk-tablo-veri-yazi','tabloVeriYazi',this.value)"/>
+          </div>
+        </div>
+        <div class="ayar-satir">
+          <div><div class="ayar-etiket">Bugün Satırı Arka Planı</div><div class="ayar-aciklama">Bugünün vurgulanan rengi — #f0faf5</div></div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <input type="text" id="txt-tablo-bugun-bg" value="#f0faf5" maxlength="7" oninput="renkKodGuncelle('--renk-tablo-bugun-bg','tabloBugunBg',this.value)" style="width:72px;padding:5px 7px;border:1.5px solid var(--renk-sinir);border-radius:8px;font-size:12px;font-family:monospace;background:var(--renk-kart,white);color:var(--renk-metin)"/>
+            <input type="color" class="renk-sec" id="ayar-tablo-bugun-bg" value="#f0faf5" oninput="renkGuncelle('--renk-tablo-bugun-bg','tabloBugunBg',this.value)"/>
+          </div>
+        </div>
+
+        <!-- DANİŞAN LİSTESİ -->
+        <div style="padding:10px 16px 4px;font-size:11px;font-weight:700;color:var(--renk-metin2);text-transform:uppercase;letter-spacing:0.5px;">Danışan Listesi</div>
+        <div class="ayar-satir">
+          <div><div class="ayar-etiket">Rozet Arka Planı</div><div class="ayar-aciklama">Giriş sayısı rozeti arka planı</div></div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <input type="text" id="txt-rozet-bg" value="#d8f3dc" maxlength="7" oninput="renkKodGuncelle('--renk-rozet-bg','rozetBg',this.value)" style="width:72px;padding:5px 7px;border:1.5px solid var(--renk-sinir);border-radius:8px;font-size:12px;font-family:monospace;background:var(--renk-kart,white);color:var(--renk-metin)"/>
+            <input type="color" class="renk-sec" id="ayar-rozet-bg" value="#d8f3dc" oninput="renkGuncelle('--renk-rozet-bg','rozetBg',this.value)"/>
+          </div>
+        </div>
+        <div class="ayar-satir">
+          <div><div class="ayar-etiket">Rozet Yazı Rengi</div><div class="ayar-aciklama">Giriş sayısı yazısı rengi</div></div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <input type="text" id="txt-rozet-yazi" value="#2d6a4f" maxlength="7" oninput="renkKodGuncelle('--renk-rozet-yazi','rozetYazi',this.value)" style="width:72px;padding:5px 7px;border:1.5px solid var(--renk-sinir);border-radius:8px;font-size:12px;font-family:monospace;background:var(--renk-kart,white);color:var(--renk-metin)"/>
+            <input type="color" class="renk-sec" id="ayar-rozet-yazi" value="#2d6a4f" oninput="renkGuncelle('--renk-rozet-yazi','rozetYazi',this.value)"/>
+          </div>
+        </div>
         <div class="ayar-satir">
           <div><div class="ayar-etiket">Arka Plan</div><div class="ayar-aciklama">Form alanı arka planı — #ffffff</div></div>
           <div style="display:flex;align-items:center;gap:6px;">
@@ -1595,6 +1682,15 @@ function ayarlariUygula() {
   document.documentElement.style.setProperty('--renk-metin2', ayarlar.metin2||'#6b7280');
   document.documentElement.style.setProperty('--renk-bg', ayarlar.bg||'#f8fffe');
   document.documentElement.style.setProperty('--renk-kart', ayarlar.kartBg||'#ffffff');
+  document.documentElement.style.setProperty('--renk-logo-baslik', ayarlar.logoBaslik||'#ffffff');
+  document.documentElement.style.setProperty('--renk-logo-slogan', ayarlar.logoSlogan||'rgba(255,255,255,0.75)');
+  document.documentElement.style.setProperty('--renk-logo-dyt', ayarlar.logoDyt||'rgba(255,255,255,0.92)');
+  document.documentElement.style.setProperty('--renk-tablo-baslik-yazi', ayarlar.tabloBaslikYazi||'#ffffff');
+  document.documentElement.style.setProperty('--renk-tablo-gun-yazi', ayarlar.tabloGunYazi||'#1a1a1a');
+  document.documentElement.style.setProperty('--renk-tablo-veri-yazi', ayarlar.tabloVeriYazi||'#6b7280');
+  document.documentElement.style.setProperty('--renk-tablo-bugun-bg', ayarlar.tabloBugunBg||'#f0faf5');
+  document.documentElement.style.setProperty('--renk-rozet-bg', ayarlar.rozetBg||ayarlar.acikRenk||'#d8f3dc');
+  document.documentElement.style.setProperty('--renk-rozet-yazi', ayarlar.rozetYazi||ayarlar.anaRenk||'#2d6a4f');
   if(e('app-adi-gorsel'))e('app-adi-gorsel').textContent=ayarlar.appAdi||'DiyetTakip';
   if(e('app-slogan-gorsel'))e('app-slogan-gorsel').textContent=ayarlar.slogan||'Beslenme takip programı';
   if(e('ayar-admin-adi'))e('ayar-admin-adi').value=ayarlar.adminAdi;
@@ -1613,6 +1709,15 @@ function ayarlariUygula() {
     'ayar-baslik-renk': ayarlar.baslikRenk||'#555555', 'txt-baslik-renk': ayarlar.baslikRenk||'#555555',
     'ayar-bg': ayarlar.bg||'#f8fffe', 'txt-bg': ayarlar.bg||'#f8fffe',
     'ayar-kart-bg': ayarlar.kartBg||'#ffffff', 'txt-kart-bg': ayarlar.kartBg||'#ffffff',
+    'ayar-logo-baslik': ayarlar.logoBaslik||'#ffffff', 'txt-logo-baslik': ayarlar.logoBaslik||'#ffffff',
+    'ayar-logo-slogan': ayarlar.logoSlogan||'#ffffff', 'txt-logo-slogan': ayarlar.logoSlogan||'#ffffff',
+    'ayar-logo-dyt': ayarlar.logoDyt||'#ffffff', 'txt-logo-dyt': ayarlar.logoDyt||'#ffffff',
+    'ayar-tablo-baslik-yazi': ayarlar.tabloBaslikYazi||'#ffffff', 'txt-tablo-baslik-yazi': ayarlar.tabloBaslikYazi||'#ffffff',
+    'ayar-tablo-gun-yazi': ayarlar.tabloGunYazi||'#1a1a1a', 'txt-tablo-gun-yazi': ayarlar.tabloGunYazi||'#1a1a1a',
+    'ayar-tablo-veri-yazi': ayarlar.tabloVeriYazi||'#6b7280', 'txt-tablo-veri-yazi': ayarlar.tabloVeriYazi||'#6b7280',
+    'ayar-tablo-bugun-bg': ayarlar.tabloBugunBg||'#f0faf5', 'txt-tablo-bugun-bg': ayarlar.tabloBugunBg||'#f0faf5',
+    'ayar-rozet-bg': ayarlar.rozetBg||'#d8f3dc', 'txt-rozet-bg': ayarlar.rozetBg||'#d8f3dc',
+    'ayar-rozet-yazi': ayarlar.rozetYazi||'#2d6a4f', 'txt-rozet-yazi': ayarlar.rozetYazi||'#2d6a4f',
   };
   Object.entries(renkMap).forEach(([id,val])=>{ const el=e(id); if(el)el.value=val; });
   if(e('ayar-app-adi'))e('ayar-app-adi').value=ayarlar.appAdi;
@@ -2359,26 +2464,36 @@ function toggleEposta() {
 function renkKodGuncelle(deg, key, val) {
   if(!/^#[0-9a-fA-F]{6}$/.test(val)) return;
   document.documentElement.style.setProperty(deg, val);
-  const colorInput = document.getElementById('ayar-' + {
-    '--renk-ana':'ana-renk','--renk-ana-koyu':'koyu-renk','--renk-ana-acik':'acik-renk',
-    '--renk-giris-bg':'giris-bg','--renk-giris-yazi':'giris-yazi','--renk-header-yazi':'header-yazi',
-    '--renk-btn-yazi':'btn-yazi','--renk-altnav-bg':'altnav-bg','--renk-altnav-yazi':'altnav-yazi',
-    '--renk-metin':'metin','--renk-metin2':'metin2','--renk-baslik-yazi':'baslik-renk',
-    '--renk-bg':'bg','--renk-kart':'kart-bg'
-  }[deg]);
+  const idMap = {
+    '--renk-ana':'ayar-ana-renk','--renk-ana-koyu':'ayar-koyu-renk','--renk-ana-acik':'ayar-acik-renk',
+    '--renk-giris-bg':'ayar-giris-bg','--renk-giris-yazi':'ayar-giris-yazi','--renk-header-yazi':'ayar-header-yazi',
+    '--renk-btn-yazi':'ayar-btn-yazi','--renk-altnav-bg':'ayar-altnav-bg','--renk-altnav-yazi':'ayar-altnav-yazi',
+    '--renk-metin':'ayar-metin','--renk-metin2':'ayar-metin2','--renk-baslik-yazi':'ayar-baslik-renk',
+    '--renk-bg':'ayar-bg','--renk-kart':'ayar-kart-bg',
+    '--renk-logo-baslik':'ayar-logo-baslik','--renk-logo-slogan':'ayar-logo-slogan','--renk-logo-dyt':'ayar-logo-dyt',
+    '--renk-tablo-baslik-yazi':'ayar-tablo-baslik-yazi','--renk-tablo-gun-yazi':'ayar-tablo-gun-yazi',
+    '--renk-tablo-veri-yazi':'ayar-tablo-veri-yazi','--renk-tablo-bugun-bg':'ayar-tablo-bugun-bg',
+    '--renk-rozet-bg':'ayar-rozet-bg','--renk-rozet-yazi':'ayar-rozet-yazi'
+  };
+  const colorInput = document.getElementById(idMap[deg]);
   if(colorInput) colorInput.value = val;
   renkAyarlariKaydet(deg, key, val);
 }
 
 function renkGuncelle(deg, key, val) {
   document.documentElement.style.setProperty(deg, val);
-  const txtId = {
+  const txtMap = {
     '--renk-ana':'txt-ana-renk','--renk-ana-koyu':'txt-koyu-renk','--renk-ana-acik':'txt-acik-renk',
     '--renk-giris-bg':'txt-giris-bg','--renk-giris-yazi':'txt-giris-yazi','--renk-header-yazi':'txt-header-yazi',
     '--renk-btn-yazi':'txt-btn-yazi','--renk-altnav-bg':'txt-altnav-bg','--renk-altnav-yazi':'txt-altnav-yazi',
     '--renk-metin':'txt-metin','--renk-metin2':'txt-metin2','--renk-baslik-yazi':'txt-baslik-renk',
-    '--renk-bg':'txt-bg','--renk-kart':'txt-kart-bg'
-  }[deg];
+    '--renk-bg':'txt-bg','--renk-kart':'txt-kart-bg',
+    '--renk-logo-baslik':'txt-logo-baslik','--renk-logo-slogan':'txt-logo-slogan','--renk-logo-dyt':'txt-logo-dyt',
+    '--renk-tablo-baslik-yazi':'txt-tablo-baslik-yazi','--renk-tablo-gun-yazi':'txt-tablo-gun-yazi',
+    '--renk-tablo-veri-yazi':'txt-tablo-veri-yazi','--renk-tablo-bugun-bg':'txt-tablo-bugun-bg',
+    '--renk-rozet-bg':'txt-rozet-bg','--renk-rozet-yazi':'txt-rozet-yazi'
+  };
+  const txtId = txtMap[deg];
   if(txtId && document.getElementById(txtId)) document.getElementById(txtId).value = val;
   renkAyarlariKaydet(deg, key, val);
 }
@@ -2389,7 +2504,11 @@ function renkAyarlariKaydet(deg, key, val) {
     '--renk-giris-bg':'girisBg','--renk-giris-yazi':'girisYazi','--renk-header-yazi':'headerYazi',
     '--renk-btn-yazi':'btnYazi','--renk-altnav-bg':'altnavBg','--renk-altnav-yazi':'altnavYazi',
     '--renk-metin':'metin','--renk-metin2':'metin2','--renk-baslik-yazi':'baslikRenk',
-    '--renk-bg':'bg','--renk-kart':'kartBg'
+    '--renk-bg':'bg','--renk-kart':'kartBg',
+    '--renk-logo-baslik':'logoBaslik','--renk-logo-slogan':'logoSlogan','--renk-logo-dyt':'logoDyt',
+    '--renk-tablo-baslik-yazi':'tabloBaslikYazi','--renk-tablo-gun-yazi':'tabloGunYazi',
+    '--renk-tablo-veri-yazi':'tabloVeriYazi','--renk-tablo-bugun-bg':'tabloBugunBg',
+    '--renk-rozet-bg':'rozetBg','--renk-rozet-yazi':'rozetYazi'
   };
   const k = keyMap[deg] || key;
   if(k) ayarlar[k] = val;
