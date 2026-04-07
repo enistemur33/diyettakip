@@ -414,18 +414,21 @@ body { font-family: var(--font); color: var(--renk-metin); background: var(--ren
       <h1 id="danisan-karsilama" style="flex:1;">Tablom</h1>
       <button class="geri-btn" onclick="cikisYap()" style="font-size:13px;">↩</button>
     </div>
-    <div class="icerik" style="padding-top:6px;padding-bottom:4px;">
-      <div class="tablo-sarici">
-        <table class="diyet-tablo" id="danisan-tablo"></table>
+    <div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+      <div style="padding:6px 14px 4px;">
+        <div class="tablo-sarici">
+          <table class="diyet-tablo" id="danisan-tablo"></table>
+        </div>
       </div>
-    </div>
-    <div class="takip-bolum" style="padding:8px 14px;">
-      <div id="hedef-bolum" style="margin-bottom:5px;display:none;">
-        <div class="takip-baslik" style="margin-bottom:4px;">🎯 Günlük Hedefler</div>
-        <div class="hedef-grid" id="hedef-grid"></div>
+      <div class="takip-bolum" style="padding:8px 14px;">
+        <div id="hedef-bolum" style="margin-bottom:5px;display:none;">
+          <div class="takip-baslik" style="margin-bottom:4px;">🎯 Günlük Hedefler</div>
+          <div class="hedef-grid" id="hedef-grid"></div>
+        </div>
+        <div class="takip-baslik">📝 Bugün ekle / çıkar</div>
+        <div class="takip-grid" id="takip-grid"></div>
+        <div style="height:8px;"></div>
       </div>
-      <div class="takip-baslik">📝 Bugün ekle / çıkar</div>
-      <div class="takip-grid" id="takip-grid"></div>
     </div>
     <div class="alt-nav">
       <button class="nav-btn" onclick="altNavSec(0)"><span class="nav-ikon">📋</span><span class="nav-etiket">Listem</span></button>
