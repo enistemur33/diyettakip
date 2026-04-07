@@ -524,6 +524,41 @@ body { font-family: var(--font); color: var(--renk-metin); background: var(--ren
           <div class="hata-mesaj" id="profil-mesaj" style="margin-top:8px;"></div>
         </div>
       </div>
+
+      <!-- DANIŞAN RENK AYARLARI -->
+      <div class="ayar-bolum">
+        <div class="ayar-baslik">🎨 Renk Ayarları</div>
+        <div style="padding:10px 14px 4px;font-size:12px;color:var(--renk-metin2);">Bu ayarlar sadece sizin cihazınızda geçerlidir.</div>
+
+        <div style="padding:6px 16px 2px;font-size:11px;font-weight:700;color:var(--renk-metin2);text-transform:uppercase;letter-spacing:0.5px;">Ana Renkler</div>
+        ${danisanRenkSatiri('Ana Renk','Header ve butonlar','--renk-ana','d-ana-renk','#2d6a4f')}
+        ${danisanRenkSatiri('Koyu Ton','Header alt tonu','--renk-ana-koyu','d-koyu-renk','#1b4332')}
+        ${danisanRenkSatiri('Açık Ton','Bölüm arka planı','--renk-ana-acik','d-acik-renk','#d8f3dc')}
+
+        <div style="padding:6px 16px 2px;font-size:11px;font-weight:700;color:var(--renk-metin2);text-transform:uppercase;letter-spacing:0.5px;">Arka Planlar</div>
+        ${danisanRenkSatiri('Sayfa Arka Planı','Genel arka plan','--renk-bg','d-bg','#f8fffe')}
+        ${danisanRenkSatiri('Kart Arka Planı','Kartlar ve bölümler','--renk-kart','d-kart','#ffffff')}
+        ${danisanRenkSatiri('Alt Menü Arka Planı','Listem/Tablo menüsü','--renk-altnav-bg','d-altnav-bg','#ffffff')}
+
+        <div style="padding:6px 16px 2px;font-size:11px;font-weight:700;color:var(--renk-metin2);text-transform:uppercase;letter-spacing:0.5px;">Yazı Renkleri</div>
+        ${danisanRenkSatiri('Ana Yazı','Tüm sayfa yazıları','--renk-metin','d-metin','#1a1a1a')}
+        ${danisanRenkSatiri('İkincil Yazı','Alt açıklamalar','--renk-metin2','d-metin2','#6b7280')}
+        ${danisanRenkSatiri('Header Yazısı','Başlık yazıları','--renk-header-yazi','d-header-yazi','#ffffff')}
+        ${danisanRenkSatiri('Alt Menü Yazısı','Menü etiketleri','--renk-altnav-yazi','d-altnav-yazi','#6b7280')}
+        ${danisanRenkSatiri('Bölüm Başlığı','Kısım başlıkları','--renk-baslik-yazi','d-baslik-yazi','#555555')}
+
+        <div style="padding:6px 16px 2px;font-size:11px;font-weight:700;color:var(--renk-metin2);text-transform:uppercase;letter-spacing:0.5px;">Tablo</div>
+        ${danisanRenkSatiri('Tablo Başlığı','Sütun başlıkları','--renk-tablo-baslik-yazi','d-tablo-baslik','#ffffff')}
+        ${danisanRenkSatiri('Gün Yazısı','Pazartesi vb.','--renk-tablo-gun-yazi','d-tablo-gun','#1a1a1a')}
+        ${danisanRenkSatiri('Veri Sayıları','İşlenen değerler','--renk-tablo-veri-yazi','d-tablo-veri','#6b7280')}
+        ${danisanRenkSatiri('Bugün Arka Planı','Bugün satırı','--renk-tablo-bugun-bg','d-tablo-bugun','#f0faf5')}
+
+        <div style="padding:14px;">
+          <button class="btn-ana" onclick="danisanRenkleriKaydet()">✓ Renkleri Kaydet</button>
+          <button onclick="danisanRenkleriSifirla()" style="width:100%;margin-top:8px;background:none;border:1.5px solid var(--renk-sinir);border-radius:var(--radius);padding:12px;font-size:14px;color:var(--renk-metin2);cursor:pointer;">↺ Varsayılana Döndür</button>
+          <div id="profil-renk-mesaj" style="margin-top:8px;font-size:13px;text-align:center;"></div>
+        </div>
+      </div>
     </div>
     <div class="alt-nav">
       <button class="nav-btn" onclick="altNavSec(0)"><span class="nav-ikon">📋</span><span class="nav-etiket">Listem</span></button>
@@ -1092,6 +1127,89 @@ const OGUN_TIPLERI = ['Kahvaltı','Ara Öğün','Öğle Yemeği','Ara Öğün 2'
 const OGUN_IKONLARI = ['☕','🍎','🍽️','🥛','🌙','🌜'];
 
 let listeAktifDanisanId = null;
+
+// ============================================================
+// DANIŞAN RENK AYARLARI
+// ============================================================
+const DANISAN_RENK_VARSAYILAN = {
+  '--renk-ana':'#2d6a4f','--renk-ana-koyu':'#1b4332','--renk-ana-acik':'#d8f3dc',
+  '--renk-bg':'#f8fffe','--renk-kart':'#ffffff','--renk-altnav-bg':'#ffffff',
+  '--renk-metin':'#1a1a1a','--renk-metin2':'#6b7280','--renk-header-yazi':'#ffffff',
+  '--renk-altnav-yazi':'#6b7280','--renk-baslik-yazi':'#555555',
+  '--renk-tablo-baslik-yazi':'#ffffff','--renk-tablo-gun-yazi':'#1a1a1a',
+  '--renk-tablo-veri-yazi':'#6b7280','--renk-tablo-bugun-bg':'#f0faf5'
+};
+
+function danisanRenkSatiri(etiket, aciklama, degisken, id, varsayilan) {
+  return `<div class="ayar-satir">
+    <div><div class="ayar-etiket">${etiket}</div><div class="ayar-aciklama">${aciklama} — ${varsayilan}</div></div>
+    <div style="display:flex;align-items:center;gap:6px;">
+      <input type="text" id="txt-${id}" value="${varsayilan}" maxlength="7"
+        oninput="danisanRenkKodGuncelle('${degisken}','${id}',this.value)"
+        style="width:72px;padding:5px 7px;border:1.5px solid var(--renk-sinir);border-radius:8px;font-size:12px;font-family:monospace;background:var(--renk-kart,white);color:var(--renk-metin)"/>
+      <input type="color" id="clr-${id}" value="${varsayilan}"
+        class="renk-sec" oninput="danisanRenkGuncelle('${degisken}','${id}',this.value)"/>
+    </div>
+  </div>`;
+}
+
+function danisanRenkKodGuncelle(deg, id, val) {
+  if(!/^#[0-9a-fA-F]{6}$/.test(val)) return;
+  document.documentElement.style.setProperty(deg, val);
+  const clr = e('clr-'+id); if(clr) clr.value = val;
+}
+
+function danisanRenkGuncelle(deg, id, val) {
+  document.documentElement.style.setProperty(deg, val);
+  const txt = e('txt-'+id); if(txt) txt.value = val;
+}
+
+function danisanRenkleriKaydet() {
+  const renkler = {};
+  Object.keys(DANISAN_RENK_VARSAYILAN).forEach(deg => {
+    renkler[deg] = getComputedStyle(document.documentElement).getPropertyValue(deg).trim();
+  });
+  localStorage.setItem('dt_danisan_renkler_' + mevcutDanisanId, JSON.stringify(renkler));
+  const msg = e('profil-renk-mesaj');
+  if(msg){ msg.textContent='✓ Renkler kaydedildi!'; msg.style.color='var(--renk-ana)'; setTimeout(()=>msg.textContent='',2000); }
+}
+
+function danisanRenkleriSifirla() {
+  localStorage.removeItem('dt_danisan_renkler_' + mevcutDanisanId);
+  // Admin ayarlarını geri yükle
+  ayarlariUygula();
+  danisanRenkInputlariniGuncelle(DANISAN_RENK_VARSAYILAN);
+  const msg = e('profil-renk-mesaj');
+  if(msg){ msg.textContent='↺ Varsayılana döndürüldü'; msg.style.color='var(--renk-metin2)'; setTimeout(()=>msg.textContent='',2000); }
+}
+
+function danisanRenkleriYukle() {
+  const kayitli = localStorage.getItem('dt_danisan_renkler_' + mevcutDanisanId);
+  if(!kayitli) return;
+  try {
+    const renkler = JSON.parse(kayitli);
+    Object.entries(renkler).forEach(([deg,val])=>{
+      document.documentElement.style.setProperty(deg, val);
+    });
+    danisanRenkInputlariniGuncelle(renkler);
+  } catch(err){}
+}
+
+function danisanRenkInputlariniGuncelle(renkler) {
+  const idMap = {
+    '--renk-ana':'d-ana-renk','--renk-ana-koyu':'d-koyu-renk','--renk-ana-acik':'d-acik-renk',
+    '--renk-bg':'d-bg','--renk-kart':'d-kart','--renk-altnav-bg':'d-altnav-bg',
+    '--renk-metin':'d-metin','--renk-metin2':'d-metin2','--renk-header-yazi':'d-header-yazi',
+    '--renk-altnav-yazi':'d-altnav-yazi','--renk-baslik-yazi':'d-baslik-yazi',
+    '--renk-tablo-baslik-yazi':'d-tablo-baslik','--renk-tablo-gun-yazi':'d-tablo-gun',
+    '--renk-tablo-veri-yazi':'d-tablo-veri','--renk-tablo-bugun-bg':'d-tablo-bugun'
+  };
+  Object.entries(renkler).forEach(([deg,val])=>{
+    const id = idMap[deg]; if(!id) return;
+    const txt=e('txt-'+id); if(txt&&/^#[0-9a-fA-F]{6}$/.test(val))txt.value=val;
+    const clr=e('clr-'+id); if(clr&&/^#[0-9a-fA-F]{6}$/.test(val))clr.value=val;
+  });
+}
 
 function listeModalAc(id) {
   listeAktifDanisanId = id;
@@ -1807,6 +1925,7 @@ function danisanGirisYap(d) {
   danisanTablosunuOlustur();
   takipGridiOlustur();
   hedefGridiOlustur();
+  danisanRenkleriYukle(); // Danışanın kayıtlı renklerini yükle
   altNavSec(0);
 }
 
@@ -1863,6 +1982,8 @@ async function girisYap() {
 function cikisYap() {
   if(!confirm('Güvenli çıkış yapılacak. Bu cihazda oturum kapatılacak.')) return;
   localStorage.removeItem('dt_oturum');
+  // Danışan renklerini sıfırla, admin renklerine dön
+  ayarlariUygula();
   mevcutDanisanId=null; e('kullanici-adi').value=''; e('sifre').value=''; e('hata-mesaj').textContent=''; ekranGoster('giris');
 }
 
