@@ -1650,7 +1650,21 @@ function degisimAra(metin){
 async function baslat() {
   try {
     const a = await sbGet('ayarlar','id=eq.1');
-    if (a&&a[0]) { ayarlar=Object.assign(ayarlar,a[0].veri); if(a[0].veri.besinler)BESINLER=a[0].veri.besinler; }
+    if (a&&a[0]) {
+      ayarlar=Object.assign(ayarlar,a[0].veri);
+      if(a[0].veri.besinler) {
+        // Supabase'den gelen besinleri varsayılan ile birleştir (butonAd, tabloAd korunur)
+        const dbBesinler = a[0].veri.besinler;
+        BESINLER = BESINLER.map(def => {
+          const db = dbBesinler.find(b => b.ad === def.ad);
+          return db ? Object.assign({}, def, db) : def;
+        });
+        // Supabase'de olup varsayılanlarda olmayan besinler
+        dbBesinler.forEach(db => {
+          if (!BESINLER.find(b => b.ad === db.ad)) BESINLER.push(db);
+        });
+      }
+    }
     const d = await sbGet('danisanlar','order=id.asc');
     if (d&&Array.isArray(d)) danisanlar=d;
   } catch(err) { console.log(err); }
@@ -1886,7 +1900,7 @@ function detayIcerigiOlustur(d) {
     </div>`;
   }).join('');
 
-  let th=`<table class="diyet-tablo" style="min-width:520px;"><thead><tr><th>Gün</th>${BESINLER.map(b=>`<th>${b.tabloAd||b.ad}</th>`).join('')}</tr></thead><tbody>`;
+  let th=`<table class="diyet-tablo" style="min-width:520px;"><thead><tr><th>Gün</th>${BESINLER.map(b=>`<th title="${b.ad}">${b.ikon}</th>`).join('')}</tr></thead><tbody>`;
   GUNLER.forEach((g,i)=>{
     const bg=i===bi;
     th+=`<tr class="${bg?'bugun':''}"><td>${g.slice(0,3)}${bg?'<span class="bugun-etiketi">bugün</span>':''}</td>`;
