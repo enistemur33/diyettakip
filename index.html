@@ -458,7 +458,7 @@ body { font-family: var(--font); color: var(--renk-metin); background: var(--ren
   <div class="ekran" id="ekran-haftalik">
     <div class="status-bar"><span id="saat-haftalik">9:41</span><span style="font-size:9px;font-style:italic;opacity:0.85;">✦ Dyt. Hatice Lale TEMUR ✦</span></div>
     <div class="header">
-      <div class="header-ikon">📅</div>
+      <div class="header-ikon" id="haftalik-tarih-ikon" style="font-size:11px;font-weight:700;width:auto;padding:0 6px;background:rgba(255,255,255,0.2);border-radius:8px;"></div>
       <h1>Haftalık Tablo</h1>
     </div>
     <div class="icerik" style="padding:10px 14px 4px;">
@@ -1043,6 +1043,12 @@ function tabloyuGuncelle(tablo) { GUNLER.forEach(g=>{if(!tablo[g])tablo[g]={};BE
 function saatiGuncelle() {
   const s=new Date(), str=s.getHours().toString().padStart(2,'0')+':'+s.getMinutes().toString().padStart(2,'0');
   ['saat','saat2','saat3','saat4','saat-listem','saat-degisim','saat-profil','saat-haftalik'].forEach(id=>{const el=e(id);if(el)el.textContent=str;});
+  // Haftalık tablo tarih ikonu
+  const tarihIkon = e('haftalik-tarih-ikon');
+  if(tarihIkon) {
+    const aylar = ['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'];
+    tarihIkon.textContent = s.getDate().toString().padStart(2,'0') + ' ' + aylar[s.getMonth()];
+  }
 }
 
 // ============================================================
