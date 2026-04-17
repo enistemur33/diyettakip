@@ -415,6 +415,8 @@ body { font-family: var(--font); color: var(--renk-metin); background: var(--ren
       <button class="geri-btn" onclick="cikisYap()" style="font-size:13px;">↩</button>
     </div>
     <div class="icerik" style="padding:8px 14px 4px;">
+      <!-- Sıfırlama uyarısı -->
+      <div id="danisan-sifirlama-uyari" style="display:none;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:600;margin-bottom:8px;text-align:center;"></div>
       <!-- GÜN SEÇİCİ -->
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;background:var(--renk-ana-acik);border-radius:12px;padding:8px 12px;">
         <span style="font-size:13px;font-weight:600;color:var(--renk-ana);flex:1;" id="secili-gun-yazisi">Bugün</span>
@@ -1808,7 +1810,9 @@ async function baslat() {
   ayarlariUygula();
   tabloCSSDegiskenleriniUygula();
   saatiGuncelle();
-  setInterval(saatiGuncelle,30000);
+  setInterval(saatiGuncelle, 30000);
+  // Her 5 dakikada bir otomatik sıfırlama kontrolü
+  setInterval(otomatikSifirlamaKontrol, 5 * 60 * 1000);
   e('yukleniyor').style.display='none';
 
   // Kayıtlı oturum var mı kontrol et
@@ -2089,7 +2093,14 @@ function detayIcerigiOlustur(d) {
       <button class="btn-ana" style="flex:1;min-width:80px;font-size:13px;" onclick="sinirModalAc(${d.id})">🎯 Sınır Belirle</button>
       <button class="btn-ikincil" style="flex:1;min-width:80px;" onclick="listeModalAc(${d.id})">📋 Liste Hazırla</button>
       <button class="btn-ikincil" style="flex:1;min-width:80px;" onclick="gecmisEkraniAc(${d.id})">📁 Geçmiş</button>
+      <button class="btn-ikincil" style="flex:1;min-width:80px;" onclick="sifirlamaGunuModalAc(${d.id})">📅 Sıfırlama Günü</button>
       <button class="btn-tehlike" style="flex:1;min-width:80px;margin:0;" onclick="tabloSifirla(${d.id})">⟳ Sıfırla</button>
+    </div>
+    <div id="sifirlama-bilgi-${d.id}" style="padding:0 16px 12px;font-size:12px;color:var(--renk-metin2);text-align:center;">
+    ${(()=>{ const sg = d.sinirlar && d.sinirlar._sifirlamaGunu !== undefined ? d.sinirlar._sifirlamaGunu : null;
+      return sg !== null
+        ? `🔄 Otomatik sıfırlama: <b>${GUNLER[sg]}</b> gece 12:00`
+        : '⚠️ Otomatik sıfırlama günü belirlenmemiş'; })()}
     </div>`;
 
   // Tarih inputuna bugünü yaz
@@ -2098,6 +2109,112 @@ function detayIcerigiOlustur(d) {
 
   // Grafiği çiz
   setTimeout(() => kiloGrafigiCiz('kilo-grafik-admin', 'kilo-liste-admin', d, true), 50);
+}
+
+// ============================================================
+// OTOMATİK TABLO SIFIRLAMA
+// ============================================================
+function sifirlamaGunuModalAc(id) {
+  const d = danisanlar.find(c=>c.id===id);
+  const mevcutGun = d.sifirlamaGunu;
+
+  const gunSecenekleri = GUNLER.map((g, i) => {
+    const secili = mevcutGun === i;
+    return `<button onclick="sifirlamaGunuKaydet(${id}, ${i})"
+      style="width:100%;padding:14px 16px;background:${secili?'var(--renk-ana)':'var(--renk-kart,white)'};
+      color:${secili?'white':'var(--renk-metin)'};border:1.5px solid ${secili?'var(--renk-ana)':'var(--renk-sinir)'};
+      border-radius:10px;font-size:14px;cursor:pointer;text-align:left;
+      display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+      <span>${secili?'✓':'·'}</span><span style="flex:1;">${g}</span>
+      <span style="font-size:11px;opacity:0.6;">gece 12:00</span>
+    </button>`;
+  }).join('');
+
+  const overlay = document.createElement('div');
+  overlay.id = 'sifirlama-gun-overlay';
+  overlay.style.cssText = 'position:absolute;inset:0;background:rgba(0,0,0,0.5);z-index:400;display:flex;align-items:flex-end;';
+  overlay.innerHTML = `<div style="background:var(--renk-bg,white);border-radius:24px 24px 0 0;padding:20px;width:100%;max-height:90%;overflow-y:auto;animation:yukariCik 0.25s ease;">
+    <div style="width:40px;height:4px;background:var(--renk-sinir);border-radius:2px;margin:0 auto 16px;"></div>
+    <div style="font-size:16px;font-weight:700;color:var(--renk-metin);margin-bottom:6px;">📅 Otomatik Sıfırlama Günü</div>
+    <div style="font-size:12px;color:var(--renk-metin2);margin-bottom:16px;">Seçilen gün gece 12:00'de tablo otomatik sıfırlanır ve geçmişe kaydedilir.</div>
+    ${gunSecenekleri}
+    ${mevcutGun !== undefined && mevcutGun !== null
+      ? `<button onclick="sifirlamaGunuKaldir(${id})" style="width:100%;margin-top:4px;background:none;border:1.5px solid #fca5a5;border-radius:10px;padding:12px;font-size:13px;color:var(--renk-tehlike);cursor:pointer;">✕ Otomatik sıfırlamayı kaldır</button>`
+      : ''}
+    <button onclick="document.getElementById('sifirlama-gun-overlay').remove()" style="width:100%;margin-top:6px;background:none;border:none;color:var(--renk-metin2);font-size:14px;padding:10px;cursor:pointer;">İptal</button>
+  </div>`;
+  overlay.addEventListener('click', ev => { if(ev.target===overlay) overlay.remove(); });
+  e('app').appendChild(overlay);
+}
+
+async function sifirlamaGunuKaydet(id, gunIdx) {
+  const d = danisanlar.find(c=>c.id===id);
+  d.sifirlamaGunu = gunIdx;
+  await sbPatch('danisanlar', `id=eq.${id}`, { sinirlar: Object.assign({}, d.sinirlar||{}, { _sifirlamaGunu: gunIdx }) });
+  // sifirlamaGunu'yu sinirlar içinde saklıyoruz (ekstra kolon açmadan)
+  if(!d.sinirlar) d.sinirlar = {};
+  d.sinirlar._sifirlamaGunu = gunIdx;
+  const ov = e('sifirlama-gun-overlay'); if(ov) ov.remove();
+  detayIcerigiOlustur(d);
+  bildirimGoster('✓ Sıfırlama günü ' + GUNLER[gunIdx] + ' olarak ayarlandı', 'basarili', 2500);
+}
+
+async function sifirlamaGunuKaldir(id) {
+  const d = danisanlar.find(c=>c.id===id);
+  d.sifirlamaGunu = null;
+  if(d.sinirlar) delete d.sinirlar._sifirlamaGunu;
+  await sbPatch('danisanlar', `id=eq.${id}`, { sinirlar: d.sinirlar||{} });
+  const ov = e('sifirlama-gun-overlay'); if(ov) ov.remove();
+  detayIcerigiOlustur(d);
+  bildirimGoster('Otomatik sıfırlama kaldırıldı', 'basarili', 2000);
+}
+
+function otomatikSifirlamaKontrol() {
+  const simdi = new Date();
+  const bugunGunIdx = simdi.getDay() === 0 ? 6 : simdi.getDay() - 1;
+  const saat = simdi.getHours();
+  const dakika = simdi.getMinutes();
+  // Gece 00:00 - 00:05 arası kontrol et
+  if(saat !== 0 || dakika > 5) return;
+
+  danisanlar.forEach(async d => {
+    const sinirlar = d.sinirlar || {};
+    const sifirlamaGunu = sinirlar._sifirlamaGunu;
+    if(sifirlamaGunu === undefined || sifirlamaGunu === null) return;
+    if(sifirlamaGunu !== bugunGunIdx) return;
+
+    // Bu hafta zaten sıfırlandı mı kontrol et
+    const sonSifirlama = sinirlar._sonSifirlama;
+    if(sonSifirlama) {
+      const sonTarih = new Date(sonSifirlama);
+      const fark = simdi - sonTarih;
+      if(fark < 6 * 24 * 60 * 60 * 1000) return; // 6 günden az geçmişse atla
+    }
+
+    // Geçmişe kaydet ve sıfırla
+    const gecmisKayit = {
+      tarih: simdi.toISOString(),
+      kilo: d.kilo || null,
+      sinirlar: JSON.parse(JSON.stringify(d.sinirlar||{})),
+      tablo: JSON.parse(JSON.stringify(d.tablo||{})),
+      liste: d.liste ? JSON.parse(JSON.stringify(d.liste)) : null,
+      liste_pdf: d.liste_pdf || null,
+      otomatik: true
+    };
+    if(!d.gecmis) d.gecmis = [];
+    d.gecmis.unshift(gecmisKayit);
+    d.tablo = bosTabloOlustur();
+    d.sinirlar._sonSifirlama = simdi.toISOString();
+
+    await sbPatch('danisanlar', `id=eq.${d.id}`, {
+      tablo: d.tablo,
+      gecmis: d.gecmis,
+      sinirlar: d.sinirlar,
+      liste: null,
+      liste_pdf: null,
+    });
+    console.log('Otomatik sıfırlama yapıldı:', d.ad);
+  });
 }
 
 async function tabloSifirla(id) {
@@ -2377,6 +2494,29 @@ function danisanTablosunuOlustur() {
     html+='</tr>';
   });
   tablo.innerHTML=html+'</tbody>';
+
+  // Sıfırlama günü uyarısı
+  const sg = d.sinirlar && d.sinirlar._sifirlamaGunu !== undefined ? d.sinirlar._sifirlamaGunu : null;
+  const uyariEl = e('danisan-sifirlama-uyari');
+  if(uyariEl && sg !== null) {
+    const bugunIdx = bugunIndex();
+    const kalanGun = sg >= bugunIdx ? sg - bugunIdx : 7 - bugunIdx + sg;
+    if(kalanGun === 0) {
+      uyariEl.innerHTML = '🔄 Bu gece tablo sıfırlanacak';
+      uyariEl.style.display = 'block';
+      uyariEl.style.background = '#fef3c7';
+      uyariEl.style.color = '#92400e';
+    } else if(kalanGun === 1) {
+      uyariEl.innerHTML = '🔄 Yarın tablo sıfırlanacak';
+      uyariEl.style.display = 'block';
+      uyariEl.style.background = '#fef3c7';
+      uyariEl.style.color = '#92400e';
+    } else {
+      uyariEl.style.display = 'none';
+    }
+  } else if(uyariEl) {
+    uyariEl.style.display = 'none';
+  }
 }
 
 function takipGridiOlustur() {
